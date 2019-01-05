@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
 
 @MappedSuperclass
 public class EntityBase implements Serializable {
@@ -30,11 +32,17 @@ public class EntityBase implements Serializable {
 	}
 
 	public Date getDataCriacao() {
-		return new Date();
+		return this.dataCriacao;
 	}
 
 	public void setDataCriacao(Date dataCriacao) {
 		this.dataCriacao = dataCriacao;
+	}
+
+	@PostPersist
+	@PostUpdate
+	public void carregaDataCriacao() {
+		this.setDataCriacao(new Date());
 	}
 
 	@Override
@@ -48,22 +56,28 @@ public class EntityBase implements Serializable {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
-			return true;			
+			return true;
 		}
 		if (obj == null) {
-			return false;			
+			return false;
 		}
 		if (getClass() != obj.getClass()) {
-			return false;			
+			return false;
 		}
 		EntityBase other = (EntityBase) obj;
 		if (codigo == null) {
 			if (other.codigo != null) {
-				return false;				
+				return false;
 			}
 		} else if (!codigo.equals(other.codigo)) {
-			return false;			
+			return false;
 		}
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return this.codigo.toString();
+	}
+
 }
