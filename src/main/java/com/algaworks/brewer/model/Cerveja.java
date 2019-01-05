@@ -12,6 +12,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+/**
+ * @author Marques
+ *
+ */
 @Entity
 @Table(name = "cerveja")
 public class Cerveja extends EntityBase {
@@ -125,6 +129,11 @@ public class Cerveja extends EntityBase {
 
 	public void setEstilo(Estilo estilo) {
 		this.estilo = estilo;
+	}
+
+	@Override
+	public String toString() {
+		return "Cerveja [nome = " + nome + ", descricao = " + descricao + "]";
 	}
 
 }

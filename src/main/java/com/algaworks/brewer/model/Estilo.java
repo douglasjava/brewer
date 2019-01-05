@@ -33,9 +33,4 @@ public class Estilo extends EntityBase {
 		this.cervejas = cervejas;
 	}
 
-	@Override
-	public String toString() {
-		return "Estilo [nome=" + nome + "]";
-	}
-
 }

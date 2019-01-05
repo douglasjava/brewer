@@ -30,7 +30,7 @@ public class EntityBase implements Serializable {
 	}
 
 	public Date getDataCriacao() {
-		return dataCriacao;
+		return new Date();
 	}
 
 	public void setDataCriacao(Date dataCriacao) {
@@ -66,10 +66,4 @@ public class EntityBase implements Serializable {
 		}
 		return true;
 	}
-
-	@Override
-	public String toString() {
-		return "EntityBase [codigo = " + codigo + ", dataCriacao = " + dataCriacao + "]";
-	}
-
 }
