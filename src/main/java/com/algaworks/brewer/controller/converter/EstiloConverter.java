@@ -7,7 +7,6 @@ import com.algaworks.brewer.model.Estilo;
 
 public class EstiloConverter implements Converter<String, Estilo> {
 
-
 	@Override
 	public Estilo convert(String codigo) {
 		Estilo estilo = new Estilo();
