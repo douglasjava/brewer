@@ -8,8 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.PostPersist;
-import javax.persistence.PostUpdate;
 
 @MappedSuperclass
 public class EntityBase implements Serializable {
@@ -37,12 +35,6 @@ public class EntityBase implements Serializable {
 
 	public void setDataCriacao(Date dataCriacao) {
 		this.dataCriacao = dataCriacao;
-	}
-
-	@PostPersist
-	@PostUpdate
-	public void carregaDataCriacao() {
-		this.setDataCriacao(new Date());
 	}
 
 	@Override
