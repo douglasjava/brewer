@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.algaworks.brewer.validation.SKU;
+
 /**
  * @author Marques
  *
@@ -21,7 +23,8 @@ import javax.validation.constraints.Size;
 public class Cerveja extends EntityBase {
 
 	private static final long serialVersionUID = 1L;
-
+	 
+	@SKU
 	@NotBlank(message = "SKU é obrigatório")
 	private String sku;
 
