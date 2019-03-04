@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "estilo")
@@ -12,6 +13,7 @@ public class Estilo extends EntityBase {
 
 	private static final long serialVersionUID = 1L;
 
+	@NotBlank(message = "Nome é obrigatório")
 	private String nome;
 
 	@OneToMany(mappedBy = "estilo")
