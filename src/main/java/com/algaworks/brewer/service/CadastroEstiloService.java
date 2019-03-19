@@ -20,7 +20,7 @@ public class CadastroEstiloService extends ServiceBase {
 		executeRules(estilo);
 
 		adicionarData(estilo);
-		estilos.save(estilo);
+		estilos.saveAndFlush(estilo);
 	}
 
 	private void executeRules(Estilo estilo) {
