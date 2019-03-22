@@ -8,6 +8,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
@@ -70,6 +72,12 @@ public class Cerveja extends EntityBase {
 	@ManyToOne
 	@JoinColumn(name = "codigo_estilo")
 	private Estilo estilo;
+
+	@PreUpdate
+	@PrePersist
+	private void prePresistUpdate() {
+		this.sku = this.sku.toUpperCase();
+	}
 
 	public String getSku() {
 		return sku;
