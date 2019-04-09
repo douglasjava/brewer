@@ -26,6 +26,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import com.algaworks.brewer.controller.CervejasController;
 import com.algaworks.brewer.controller.converter.EstiloConverter;
+import com.algaworks.brewer.thymeleaf.BrewerDialect;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
@@ -56,6 +57,7 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
 		engine.setTemplateResolver(templateResolver());
 
 		engine.addDialect(new LayoutDialect());
+		engine.addDialect(new BrewerDialect());
 		return engine;
 	}
 
@@ -77,18 +79,18 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
 	public FormattingConversionService mvcConversionService() {
 		FormattingConversionService conversionService = new FormattingConversionService();
 		conversionService.addConverter(new EstiloConverter());
-		
+
 		NumberStyleFormatter bigDecimalFormatter = new NumberStyleFormatter("#,##0.00");
 		conversionService.addFormatterForFieldType(BigDecimal.class, bigDecimalFormatter);
-		
+
 		NumberStyleFormatter integerFormatter = new NumberStyleFormatter("#,##0");
 		conversionService.addFormatterForFieldType(Integer.class, integerFormatter);
-		
+
 		DefaultConversionService.addDefaultConverters(conversionService);
-		
+
 		return conversionService;
 	}
-	
+
 	@Bean
 	public FixedLocaleResolver localeResolver() {
 		return new FixedLocaleResolver(new Locale("pt", "BR"));
