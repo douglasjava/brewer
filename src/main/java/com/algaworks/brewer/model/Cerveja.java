@@ -20,12 +20,17 @@ import javax.validation.constraints.Size;
 
 import com.algaworks.brewer.validation.SKU;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author Marques
  *
  */
 @Entity
 @Table(name = "cerveja")
+@Getter
+@Setter
 public class Cerveja extends EntityBase {
 
 	private static final long serialVersionUID = 1L;
@@ -73,90 +78,15 @@ public class Cerveja extends EntityBase {
 	@JoinColumn(name = "codigo_estilo")
 	private Estilo estilo;
 
+	private String foto;
+
+	@Column(name = "content_type")
+	private String contentType;
+
 	@PreUpdate
 	@PrePersist
 	private void prePresistUpdate() {
 		this.sku = this.sku.toUpperCase();
-	}
-
-	public String getSku() {
-		return sku;
-	}
-
-	public void setSku(String sku) {
-		this.sku = sku;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-
-	public BigDecimal getValor() {
-		return valor;
-	}
-
-	public void setValor(BigDecimal valor) {
-		this.valor = valor;
-	}
-
-	public BigDecimal getTeorAlcoolico() {
-		return teorAlcoolico;
-	}
-
-	public void setTeorAlcoolico(BigDecimal teorAlcoolico) {
-		this.teorAlcoolico = teorAlcoolico;
-	}
-
-	public BigDecimal getComissao() {
-		return comissao;
-	}
-
-	public void setComissao(BigDecimal comissao) {
-		this.comissao = comissao;
-	}
-
-	public Integer getQuantidadeEstoque() {
-		return quantidadeEstoque;
-	}
-
-	public void setQuantidadeEstoque(Integer quantidadeEstoque) {
-		this.quantidadeEstoque = quantidadeEstoque;
-	}
-
-	public Origem getOrigem() {
-		return origem;
-	}
-
-	public void setOrigem(Origem origem) {
-		this.origem = origem;
-	}
-
-	public Sabor getSabor() {
-		return sabor;
-	}
-
-	public void setSabor(Sabor sabor) {
-		this.sabor = sabor;
-	}
-
-	public Estilo getEstilo() {
-		return estilo;
-	}
-
-	public void setEstilo(Estilo estilo) {
-		this.estilo = estilo;
 	}
 
 	@Override
