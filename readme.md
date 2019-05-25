@@ -1,5 +1,5 @@
 ## Projeto Spring Brewer
-## Using Postegre
+## Using mySql
 
 
 
