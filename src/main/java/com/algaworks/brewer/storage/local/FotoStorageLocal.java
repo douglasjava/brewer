@@ -22,7 +22,6 @@ public class FotoStorageLocal implements FotoStorage {
 	private Path local;
 
 	public FotoStorageLocal() {
-		// this(getDefault().getPath(System.getenv("HOME"), ".brewerfotos")); Linux
 		this(getDefault().getPath(System.getenv("HOMEDRIVE"), "/brewerfotos"));
 	}
 
@@ -45,6 +44,15 @@ public class FotoStorageLocal implements FotoStorage {
 			}
 		}
 		return nomeNovo;
+	}
+
+	@Override
+	public byte[] recuperarFotoTemporaria(String nome) {
+		try {
+			return Files.readAllBytes(this.localTemporario.resolve(nome));
+		} catch (IOException e) {
+			throw new RuntimeException("Erro lendo uma foto temporaria", e);
+		}
 	}
 
 	public Path getLocalTemporario() {
