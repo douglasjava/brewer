@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.support.DefaultConversionService;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.web.servlet.ViewResolver;
@@ -17,12 +18,10 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.FixedLocaleResolver;
-import org.thymeleaf.spring5.ISpringTemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import com.algaworks.brewer.controller.CervejasController;
 import com.algaworks.brewer.controller.converter.EstiloConverter;
@@ -33,6 +32,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 @Configuration
 @ComponentScan(basePackageClasses = { CervejasController.class })
 @EnableWebMvc
+@EnableSpringDataWebSupport
 public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
@@ -51,22 +51,24 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
 	}
 
 	@Bean
-	public ISpringTemplateEngine templateEngine() {
-		SpringTemplateEngine engine = new SpringTemplateEngine();
-		engine.setEnableSpringELCompiler(true);
-		engine.setTemplateResolver(templateResolver());
+	public SpringTemplateEngine templateEngine() {
+		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+		templateEngine.setEnableSpringELCompiler(true);
+		templateEngine.setTemplateResolver(templateResolver());
 
-		engine.addDialect(new LayoutDialect());
-		engine.addDialect(new BrewerDialect());
-		return engine;
+		templateEngine.addDialect(new LayoutDialect());
+		templateEngine.addDialect(new BrewerDialect());
+
+		return templateEngine;
 	}
 
-	private ITemplateResolver templateResolver() {
+	private SpringResourceTemplateResolver templateResolver() {
 		SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
 		resolver.setApplicationContext(applicationContext);
-		resolver.setPrefix("classpath:/template/");
+		resolver.setPrefix("classpath:/templates/");
 		resolver.setSuffix(".html");
 		resolver.setTemplateMode(TemplateMode.HTML);
+		resolver.setCacheable(true);
 		return resolver;
 	}
 

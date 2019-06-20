@@ -1,5 +1,7 @@
 package com.algaworks.brewer.model;
 
+import static org.thymeleaf.util.StringUtils.isEmpty;
+
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -82,6 +84,10 @@ public class Cerveja extends EntityBase {
 
 	@Column(name = "content_type")
 	private String contentType;
+
+	public String getFotoOuMock() {
+		return !isEmpty(foto) ? foto : "cerveja-mock.png";
+	}
 
 	@PreUpdate
 	@PrePersist
