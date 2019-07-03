@@ -1,75 +1,44 @@
 package com.algaworks.brewer.model;
 
-public class Endereco {
+import java.io.Serializable;
+import java.util.Objects;
 
-	private Long id;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Embeddable
+public class Endereco implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private String logradouro;
+
 	private String numero;
+
 	private String complemento;
+
 	private String cep;
-	private String estado;
-	private String cidade;
 
-	public Long getId() {
-		return id;
-	}
+	@ManyToOne
+	@JoinColumn(name = "codigo_cidade")
+	private Cidade cidade;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+	@Transient
+	private Estado estado;
 
-	public String getLogradouro() {
-		return logradouro;
-	}
-
-	public void setLogradouro(String logradouro) {
-		this.logradouro = logradouro;
-	}
-
-	public String getNumero() {
-		return numero;
-	}
-
-	public void setNumero(String numero) {
-		this.numero = numero;
-	}
-
-	public String getComplemento() {
-		return complemento;
-	}
-
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
-	}
-
-	public String getCep() {
-		return cep;
-	}
-
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-
-	public String getEstado() {
-		return estado;
-	}
-
-	public void setEstado(String estado) {
-		this.estado = estado;
-	}
-
-	public String getCidade() {
-		return cidade;
-	}
-
-	public void setCidade(String cidade) {
-		this.cidade = cidade;
-	}
-
-	@Override
-	public String toString() {
-		return "Endereco [id=" + id + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento="
-				+ complemento + ", cep=" + cep + ", estado=" + estado + ", cidade=" + cidade + "]";
+	public String getNomeCidadeSiglaEstado() {
+		return Objects.nonNull(this.cidade) ? this.cidade.getNome() + "/" + this.cidade.getEstado().getSigla() : "";
 	}
 
 }
