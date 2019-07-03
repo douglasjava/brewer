@@ -26,6 +26,7 @@
 		<java.version>1.8</java.version>
 		<jackson-core.version>2.7.5</jackson-core.version>
 		<thumbnailator.version>0.4.8</thumbnailator.version>
+		<guava.version>19.0</guava.version>
 	</properties>
 
 	<dependencies>
@@ -151,6 +152,21 @@
 			<artifactId>gson</artifactId>
 			<version>2.8.5</version>
 		</dependency>
+		
+		<!-- Cache - Guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!-- Spring Context Support -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<scope>compile</scope>
+		</dependency>		
 
 	</dependencies>
 

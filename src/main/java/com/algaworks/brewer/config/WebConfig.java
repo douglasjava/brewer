@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 import org.springframework.beans.BeansException;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +39,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 @ComponentScan(basePackageClasses = { CervejasController.class })
 @EnableWebMvc
 @EnableSpringDataWebSupport
+@EnableCaching
 public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
@@ -102,6 +106,19 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
 	@Bean
 	public FixedLocaleResolver localeResolver() {
 		return new FixedLocaleResolver(new Locale("pt", "BR"));
+	}
+
+	/**
+	 * Método utilizado para guarda informações em Cache O método abaixo está
+	 * utilizando {@link ConcurrentMapCacheManager} que não é adequado para produção
+	 * pois não há como configurar, recomendado a utilização do CaffeineCacheManager
+	 * que reecreveu a implementação do Guava do google
+	 * 
+	 * @return
+	 */
+	@Bean
+	public CacheManager cacheManager() {
+		return new ConcurrentMapCacheManager();
 	}
 
 }

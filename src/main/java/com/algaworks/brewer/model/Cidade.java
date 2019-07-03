@@ -1,6 +1,7 @@
 package com.algaworks.brewer.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -42,5 +43,9 @@ public class Cidade implements Serializable {
 	@JsonIgnore
 	@NotNull(message = "Estado é obrigatório")
 	private Estado estado;
+
+	public boolean temEstado() {
+		return Objects.nonNull(this.estado);
+	}
 
 }
