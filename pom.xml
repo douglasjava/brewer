@@ -27,6 +27,8 @@
 		<jackson-core.version>2.7.5</jackson-core.version>
 		<thumbnailator.version>0.4.8</thumbnailator.version>
 		<guava.version>19.0</guava.version>
+		<commons-beanutils.version>1.9.2</commons-beanutils.version>
+		<spring-security-web.version>4.1.1.RELEASE</spring-security-web.version>
 	</properties>
 
 	<dependencies>
@@ -34,8 +36,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId> 
-			</dependency> -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -152,7 +152,7 @@
 			<artifactId>gson</artifactId>
 			<version>2.8.5</version>
 		</dependency>
-		
+
 		<!-- Cache - Guava -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -160,13 +160,29 @@
 			<version>${guava.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<!-- Spring Context Support -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<scope>compile</scope>
-		</dependency>		
+		</dependency>
+
+		<!-- Apache Bean Utils -->
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${commons-beanutils.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Spring Security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring-security-web.version}</version>
+			<scope>compile</scope>
+		</dependency>
 
 	</dependencies>
 

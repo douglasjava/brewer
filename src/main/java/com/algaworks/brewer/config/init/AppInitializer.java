@@ -8,6 +8,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.algaworks.brewer.config.DataBaseConfig;
+import com.algaworks.brewer.config.SecurityConfig;
 import com.algaworks.brewer.config.ServiceConfig;
 import com.algaworks.brewer.config.WebConfig;
 
@@ -15,7 +16,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] { DataBaseConfig.class, ServiceConfig.class };
+		return new Class<?>[] { DataBaseConfig.class, ServiceConfig.class, SecurityConfig.class };
 	}
 
 	@Override
@@ -35,7 +36,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 		characterEncodingFilter.setForceEncoding(true);
 		return new Filter[] { characterEncodingFilter };
 	}
-	
+
 	@Override
 	protected void customizeRegistration(Dynamic registration) {
 		registration.setMultipartConfig(new MultipartConfigElement(""));
