@@ -25,6 +25,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.FixedLocaleResolver;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -71,6 +72,7 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
 		templateEngine.addDialect(new LayoutDialect());
 		templateEngine.addDialect(new BrewerDialect());
 		templateEngine.addDialect(new DataAttributeDialect());
+		templateEngine.addDialect(new SpringSecurityDialect());
 
 		return templateEngine;
 	}
