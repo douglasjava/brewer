@@ -35,7 +35,7 @@ public class CervejasImpl implements CervejasQueries {
 	public Page<Cerveja> filtrar(CervejaFilter filtro, Pageable pageable) {
 
 		List<Predicate> predicates = new ArrayList<>();
-		List<Cerveja> cervejas = new ArrayList<>();
+		List<Cerveja> cervejas = null;
 
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
 		CriteriaQuery<Cerveja> query = builder.createQuery(Cerveja.class);

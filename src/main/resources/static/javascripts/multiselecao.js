@@ -1,19 +1,23 @@
-Brewer = Brewer || {};
+var Brewer = Brewer || {};
 
 Brewer.MultiSelecao = (function() {
 	
 	function MultiSelecao() {
 		this.statusBtn = $('.js-status-btn');
 		this.selecaoCheckbox = $('.js-selecao');
+		this.selecaoTodosCheckbox = $('.js-selecao-todos');
 	}
 	
 	MultiSelecao.prototype.iniciar = function() {
 		this.statusBtn.on('click', onStatusBtnClicado.bind(this));
+		this.selecaoTodosCheckbox.on('click', onSelecaoTodosClicado.bind(this));
+		this.selecaoCheckbox.on('click', onSelecaoClicado.bind(this));
 	}
 	
 	function onStatusBtnClicado(event) {
 		var botaoClicado = $(event.currentTarget);
 		var status = botaoClicado.data('status');
+		var url = botaoClicado.data('url');
 		
 		var checkBoxSelecionados = this.selecaoCheckbox.filter(':checked');
 		var codigos = $.map(checkBoxSelecionados, function(c) {
@@ -21,21 +25,40 @@ Brewer.MultiSelecao = (function() {
 		});
 		
 		if (codigos.length > 0) {
-			requestService(codigos, status);
+			requestService(codigos, status, url);
 		}
 	}
 	
-	function requestService(codigos, status) {
+	function requestService(codigos, status, url) {
+		var formData = { codigos, status }
 		$.ajax({
-			url: '/brewer/usuarios/status',
+			url: url,
 			method: 'PUT',
-			data: { codigos, status },
+			contentType : "application/json",
+			data: JSON.stringify(formData),
 			dataType: "json",
-			success: function() {
-				window.location.reload();
-			}
+            error: function(data) { 
+            	data.status === 200 ? window.location.reload() : ''; 
+            }
 		});
     }
+	
+	
+	function onSelecaoTodosClicado(event) {
+		var statusCheck = this.selecaoTodosCheckbox.prop('checked');
+		this.selecaoCheckbox.prop('checked', statusCheck); 
+		statusBotaoAcao.call(this, statusCheck);
+	}
+	
+	function onSelecaoClicado(event){
+		var selecaoCheckBoxChecados = this.selecaoCheckbox.filter(':checked');
+		this.selecaoTodosCheckbox.prop('checked', selecaoCheckBoxChecados >= this.selecaoCheckbox.length);
+		statusBotaoAcao.call(this, selecaoCheckBoxChecados.length); //0 significa false no javaScript
+	}
+	
+	function statusBotaoAcao(ativar){
+		ativar ? this.statusBtn.removeClass('disabled') : this.statusBtn.addClass('disabled');
+	}
 	
 	return MultiSelecao;
 	
