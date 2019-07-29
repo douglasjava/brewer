@@ -36,10 +36,15 @@ public class CadastroUsuarioService {
 
 		if (usuario.isNovo()) {
 			usuario.setSenha(this.passwordEncoder.encode(usuario.getSenha()));
-			usuario.setConfirmacaoSenha(usuario.getSenha());;
+			usuario.setConfirmacaoSenha(usuario.getSenha());
 		}
 
 		usuarios.save(usuario);
+	}
+
+	@Transactional
+	public void alterarStatus(Long[] codigos, StatusUsuario statusUsuario) {
+		statusUsuario.executar(codigos, usuarios);
 	}
 
 }

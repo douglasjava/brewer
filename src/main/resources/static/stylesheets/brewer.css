@@ -7,9 +7,10 @@
 	font-size: 18px;
 }
 
-.bw-required >.control-label:after {
-	content: "*"
+.bw-required > .control-label:after {
+	content: "*";
 }
+
 
 /*
 ######################
@@ -26,36 +27,35 @@
 	margin: 6px 0 0 5px;
 }
 
-/*
-######################
-# UPLOAD
-######################
-*/
+/* Upload */
 .bw-upload {
 	padding: 15px;
+	
 	border: 1px dashed #ddd;
 	border-radius: 4px;
 	background: #fafafa;
+	
 	text-align: center;
 }
 
 .bw-upload-form-file {
 	display: inline-block;
-	vertical-align: middle;
-	position: relative;
-	overflow: hidden;
-	margin-bottom: 1px;
+    vertical-align: middle;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1px;
 }
 
-.bw-upload-form-file>input[type=file] {
+.bw-upload-form-file > input[type=file] {
 	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 1;
-	width: 100%;
-	opacity: 0;
-	cursor: pointer;
-	font-size: 500px;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+    
+    font-size: 500px;
 }
 
 /* Tabela Simples */
@@ -84,7 +84,6 @@
 .table-col-acoes {
 	width: 80px;
 }
-
 
 /* Colunas - Pesquisa de Cervejas */
 .table-cervejas-col-foto {
@@ -156,6 +155,11 @@
 .table-cidades-col-estado {
 	width: 140px;
 	text-align: right;
+}
+
+/* Colunas - Pesquisa de usuários */
+.table-usuarios-col-status {
+	width: 30px;
 }
 
 /*
