@@ -25,6 +25,7 @@ import org.hibernate.validator.group.GroupSequenceProvider;
 import com.algaworks.brewer.model.validation.ClienteGroupSequenceProvider;
 import com.algaworks.brewer.model.validation.group.CnpjGroup;
 import com.algaworks.brewer.model.validation.group.CpfGroup;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -68,6 +69,7 @@ public class Cliente implements Serializable {
 	private String email;
 
 	@Embedded
+	@JsonIgnore
 	private Endereco endereco;
 
 	@PrePersist

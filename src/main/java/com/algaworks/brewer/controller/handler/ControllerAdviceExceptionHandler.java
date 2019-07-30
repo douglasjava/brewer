@@ -19,4 +19,5 @@ public class ControllerAdviceExceptionHandler {
 	public ResponseEntity<String> handleCepException(CepException e) {
 		return ResponseEntity.badRequest().body(e.getMessage());
 	}
+
 }
