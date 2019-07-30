@@ -1,20 +1,18 @@
 package com.algaworks.brewer.repository.helper.usuario;
 
-import static org.springframework.util.StringUtils.isEmpty;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
+import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
@@ -23,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.algaworks.brewer.model.Grupo;
 import com.algaworks.brewer.model.Usuario;
@@ -51,64 +50,51 @@ public class UsuariosImpl implements UsuariosQueries {
 				String.class).setParameter("usuario", usuario).getResultList();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	@Override
 	public Page<Usuario> filtrar(UsuarioFilter filtro, Pageable pageable) {
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Usuario.class);
 
-		List<Predicate> predicates = new ArrayList<>();
-		List<Usuario> usuarios = null;
+		paginacaoUtil.preparar(criteria, pageable);
+		adicionarFiltro(filtro, criteria);
 
-		CriteriaBuilder builder = manager.getCriteriaBuilder();
-		CriteriaQuery<Usuario> query = builder.createQuery(Usuario.class);
-		Root<Usuario> usuarioRoot = query.from(Usuario.class);
-
-		int paginaAtual = pageable.getPageNumber();
-		int totalRegistrosPorPagina = pageable.getPageSize();
-		int primeiroRegistro = paginaAtual * totalRegistrosPorPagina;
-
-		adicionarFiltro(filtro, predicates, builder, usuarioRoot, query);
-
-		paginacaoUtil.ordenacao(pageable, builder, query, usuarioRoot);
-		
-		usuarios = manager.createQuery(query)
-						  .setFirstResult(primeiroRegistro)
-						  .setMaxResults(totalRegistrosPorPagina)
-						  .getResultList();
-
-		return new PageImpl<>(usuarios, pageable, total(filtro));
-		
+		List<Usuario> filtrados = criteria.list();
+		filtrados.forEach(u -> Hibernate.initialize(u.getGrupos()));
+		return new PageImpl<>(filtrados, pageable, total(filtro));
 	}
 
 	private Long total(UsuarioFilter filtro) {
-		List<Predicate> predicates = new ArrayList<>();
-		
-		CriteriaBuilder builder = manager.getCriteriaBuilder();
-		CriteriaQuery<Usuario> query = builder.createQuery(Usuario.class);
-		Root<Usuario> usuarioRoot = query.from(Usuario.class);
-		
-		adicionarFiltro(filtro, predicates, builder, usuarioRoot, query);
-		
-		Integer total = manager.createQuery(query).getResultList().size();
-		
-		return total.longValue();
+		Criteria criteria = manager.unwrap(Session.class).createCriteria(Usuario.class);
+		adicionarFiltro(filtro, criteria);
+		criteria.setProjection(Projections.rowCount());
+		return (Long) criteria.uniqueResult();
 	}
 
-	private void adicionarFiltro(UsuarioFilter filtro, List<Predicate> predicates, CriteriaBuilder builder, Root<Usuario> usuarioRoot, CriteriaQuery<Usuario> query) {
-		
-		if (!isEmpty(filtro.getNome())) {
-			predicates.add(builder.like(usuarioRoot.get("nome"), "%" + filtro.getNome() + "%"));
-		}
+	private void adicionarFiltro(UsuarioFilter filtro, Criteria criteria) {
+		if (filtro != null) {
+			if (!StringUtils.isEmpty(filtro.getNome())) {
+				criteria.add(Restrictions.ilike("nome", filtro.getNome(), MatchMode.ANYWHERE));
+			}
 
-		if (!isEmpty(filtro.getEmail())) {
-			predicates.add(builder.equal(usuarioRoot.get("sku"), filtro.getEmail()));
-		}
-			
-		if (filtro.getGrupos() != null && !filtro.getGrupos().isEmpty()) {
-			for (Long codigoGrupo : filtro.getGrupos().stream().mapToLong(Grupo::getCodigo).toArray()) {				
-				predicates.add(usuarioRoot.join("grupos").get("codigo").in(codigoGrupo));
+			if (!StringUtils.isEmpty(filtro.getEmail())) {
+				criteria.add(Restrictions.ilike("email", filtro.getEmail(), MatchMode.START));
+			}
+
+			if (filtro.getGrupos() != null && !filtro.getGrupos().isEmpty()) {
+				List<Criterion> subqueries = new ArrayList<>();
+				for (Long codigoGrupo : filtro.getGrupos().stream().mapToLong(Grupo::getCodigo).toArray()) {
+					DetachedCriteria dc = DetachedCriteria.forClass(UsuarioGrupo.class);
+					dc.add(Restrictions.eq("id.grupo.codigo", codigoGrupo));
+					dc.setProjection(Projections.property("id.usuario"));
+
+					subqueries.add(Subqueries.propertyIn("codigo", dc));
+				}
+
+				Criterion[] criterions = new Criterion[subqueries.size()];
+				criteria.add(Restrictions.and(subqueries.toArray(criterions)));
 			}
 		}
-		
 	}
 
 }
