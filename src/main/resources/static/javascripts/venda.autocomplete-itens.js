@@ -12,7 +12,9 @@ Brewer.Autocomplete = (function() {
 	
 	Autocomplete.prototype.iniciar = function() {
 		var options = {
-			url: urlAction.bind(this),
+			url: function(skuOuNome) {
+				return this.skuOuNomeInput.data('url') + '?skuOuNome=' + skuOuNome;
+			}.bind(this),
 			getValue: 'nome',
 			minCharNumber: 3,
 			requestDelay: 300,
@@ -29,10 +31,6 @@ Brewer.Autocomplete = (function() {
 		};
 		
 		this.skuOuNomeInput.easyAutocomplete(options);
-	}
-	
-	function urlAction(skuOuNome) {
-		return this.skuOuNomeInput.data('url') + '?skuOuNome=' + skuOuNome
 	}
 	
 	function onItemSelecionado() {

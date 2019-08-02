@@ -1,21 +1,28 @@
-package com.algaworks.brewer.venda.session;
+package com.algaworks.brewer.session;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
+import java.util.stream.IntStream;
 
 import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.model.ItemVenda;
 
-@SessionScope
-@Component
-public class TabelaItensVenda {
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
+@EqualsAndHashCode(exclude = "itens")
+@Getter
+class TabelaItensVenda {
+
+	private String uuid;
 	private List<ItemVenda> itens = new ArrayList<>();
+	
+	public TabelaItensVenda(String uuid) {
+		super();
+		this.uuid = uuid;
+	}
 
 	public BigDecimal getValorTotal() {
 		return itens.stream().map(ItemVenda::getValorTotal).reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
@@ -38,8 +45,20 @@ public class TabelaItensVenda {
 	}
 
 	public void alterarQuantidadeItens(Cerveja cerveja, Integer quantidade) {
-		ItemVenda itemVenda = buscarItemPorCerveja(cerveja).get();
-		itemVenda.setQuantidade(quantidade);
+		Optional<ItemVenda> itemVendaOptional = buscarItemPorCerveja(cerveja);
+		if(itemVendaOptional.isPresent()) {
+			ItemVenda itemVenda = itemVendaOptional.get();
+			itemVenda.setQuantidade(quantidade);			
+		}
+	}
+	
+	/**
+	 * Método IntStream usado para gerar uma sequencia numerica de 0 até a quantidade total de itens da lista.
+	 * Depois filtramos de acordo com a cerveja e recuperamos o index, já que só pode um utilizamos o método findAny. 
+	 * @param cerveja
+	 */
+	public void excluirItem(Cerveja cerveja) {
+		itens.remove(IntStream.range(0, itens.size()).filter(i -> itens.get(i).getCerveja().equals(cerveja)).findAny().getAsInt());
 	}
 
 	public int total() {

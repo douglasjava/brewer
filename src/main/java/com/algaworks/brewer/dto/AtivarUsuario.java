@@ -1,4 +1,6 @@
-package com.algaworks.brewer.service;
+package com.algaworks.brewer.dto;
+
+import com.algaworks.brewer.service.StatusUsuario;
 
 import lombok.Getter;
 import lombok.Setter;

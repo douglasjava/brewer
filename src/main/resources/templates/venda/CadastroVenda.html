@@ -3,8 +3,8 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/LayoutPadrao}"
-	xmlns:data="http://www.thymeleaf.org/extras/data"
-	xmlns:brewer="http://brewer.algaworks.com">
+	xmlns:brewer="http://brewer.algaworks.com"
+	xmlns:data="http://www.thymeleaf.org/extras/data">
 
 <head>
 	<title>Cadastro de venda</title>
@@ -27,6 +27,7 @@
 	
 	<div class="container-fluid">
 		<form method="POST" th:action="@{/vendas/nova}">
+			<input type="hidden" id="uuid" th:value="${uuid}">
 			
 			<div class="row">
 				<div class="col-sm-4">
@@ -67,6 +68,7 @@
 					<label class="control-label" for="nomeCliente">Cliente</label>
 					<div class="input-group">
 				      <input id="nomeCliente" type="text" readonly="readonly" class="form-control" placeholder="Clique na lupa para pesquisar o cliente"/>
+				      <input id="codigoCliente" type="hidden"/>
 				      <span class="input-group-btn">
 				        <button class="btn  btn-default  js-tooltip" type="button" title="Pesquisa avançada"
 				        		data-toggle="modal" data-target="#pesquisaRapidaClientes" >
@@ -108,7 +110,8 @@
 					<div class="row">
 						<div class="form-group  col-lg-12">
 							<input type="text" class="form-control  js-sku-nome-cerveja-input" id="cerveja" 
-								placeholder="Pesquise e adicione a cerveja pelo SKU ou nome" autofocus="autofocus" data:url='@{/brewer/cervejas}' />
+								placeholder="Pesquise e adicione a cerveja pelo SKU ou nome" autofocus="autofocus" 
+								data:url="@{/brewer/cervejas}"/>
 						</div>
 					</div>
 					
@@ -116,7 +119,7 @@
 						<div class="bw-tabela-cervejas__vazio">
 							<i class="glyphicon  glyphicon-shopping-cart"></i> 
 							<span>Você ainda não adicionou nenhuma cerveja.</span>
-						</div> 
+						</div>
 					</div>
 				</div>
 				
@@ -169,9 +172,9 @@
 <th:block layout:fragment="javascript-extra">
 	<script th:src="@{/javascripts/vendors/jquery.easy-autocomplete.min.js}"></script>
 	<script th:src="@{/javascripts/vendors/handlebars.min.js}"></script>
-	<script th:src="@{/javascripts/cliente.pesquisa-rapida.js}"></script>	
+	<script th:src="@{/javascripts/cliente.pesquisa-rapida.js}"></script>
 	<script th:src="@{/javascripts/venda.autocomplete-itens.js}"></script>
-	<script th:src="@{/javascripts/venda.tabela-itens.js}"></script>	
+	<script th:src="@{/javascripts/venda.tabela-itens.js}"></script>
 	<script>
 	$(function() {
 		$('.js-abas-venda a').click(function (e) {

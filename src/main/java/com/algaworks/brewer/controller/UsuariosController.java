@@ -20,13 +20,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.algaworks.brewer.controller.page.PageWrapper;
+import com.algaworks.brewer.dto.AtivarUsuario;
 import com.algaworks.brewer.exceptions.EmailJaCadastradoException;
 import com.algaworks.brewer.exceptions.SenhaObrigatoriaUsuarioException;
 import com.algaworks.brewer.model.Usuario;
 import com.algaworks.brewer.repository.Grupos;
 import com.algaworks.brewer.repository.Usuarios;
 import com.algaworks.brewer.repository.filter.UsuarioFilter;
-import com.algaworks.brewer.service.AtivarUsuario;
 import com.algaworks.brewer.service.CadastroUsuarioService;
 
 @Controller

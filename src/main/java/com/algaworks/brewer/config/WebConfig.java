@@ -16,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.convert.support.DefaultConversionService;
+import org.springframework.data.repository.support.DomainClassConverter;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.number.NumberStyleFormatter;
@@ -37,14 +38,14 @@ import com.algaworks.brewer.controller.converter.CidadeConverter;
 import com.algaworks.brewer.controller.converter.EstadoConverter;
 import com.algaworks.brewer.controller.converter.EstiloConverter;
 import com.algaworks.brewer.controller.converter.GrupoConverter;
+import com.algaworks.brewer.session.TabelasItensSession;
 import com.algaworks.brewer.thymeleaf.BrewerDialect;
-import com.algaworks.brewer.venda.session.TabelaItensVenda;
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
 @Configuration
-@ComponentScan(basePackageClasses = { CervejasController.class, TabelaItensVenda.class })
+@ComponentScan(basePackageClasses = { CervejasController.class, TabelasItensSession.class })
 @EnableWebMvc
 @EnableSpringDataWebSupport
 @EnableCaching
@@ -148,6 +149,11 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
 		registry.addMapping("/**").allowedOrigins("*")
 				.allowedMethods("HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE")
 				.maxAge(3600);
+	}
+	
+	@Bean
+	public DomainClassConverter<FormattingConversionService> domainClassConverter(){
+		return new DomainClassConverter<FormattingConversionService>(mvcConversionService());
 	}
 
 }
