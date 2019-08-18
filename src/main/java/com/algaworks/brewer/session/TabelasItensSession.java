@@ -1,5 +1,6 @@
 package com.algaworks.brewer.session;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,15 +33,19 @@ public class TabelasItensSession {
 		tabela.excluirItem(cerveja);
 	}
 
+	public BigDecimal getValorTotal(String uuid) {
+		return buscarTabelaPorUuid(uuid).getValorTotal();
+	}
+
 	public List<ItemVenda> getItens(String uuid) {
 		return buscarTabelaPorUuid(uuid).getItens();
 	}
-	
+
 	private TabelaItensVenda buscarTabelaPorUuid(String uuid) {
 		return tabelas.stream()
-				.filter(t -> t.getUuid().equals(uuid))
-				.findAny()
-				.orElse(new TabelaItensVenda(uuid));
+					  .filter(t -> t.getUuid().equals(uuid))
+					  .findAny()
+					  .orElse(new TabelaItensVenda(uuid));
 	}
-	
+
 }
