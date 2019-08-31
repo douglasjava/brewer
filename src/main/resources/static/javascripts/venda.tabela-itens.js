@@ -12,6 +12,13 @@ Brewer.TabelaItens = (function() {
 	
 	TabelaItens.prototype.iniciar = function() {
 		this.autocomplete.on('item-selecionado', onItemSelecionado.bind(this));
+		
+		bindQuantidade.call(this);
+		bindTabelaItem.call(this);
+	}
+	
+	TabelaItens.prototype.valorTotal = function() {
+		return this.tabelaCervejasContainer.data('valor');
 	}
 	
 	function onItemSelecionado(evento, item) {
@@ -30,15 +37,9 @@ Brewer.TabelaItens = (function() {
 	function onItemAtualizadoNoServidor(html) {
 		this.tabelaCervejasContainer.html(html);
 		
-		var quantidadeItemInput = $('.js-tabela-cerveja-quantidade-item');
-		quantidadeItemInput.on('change', onQuantidadeItemAlterado.bind(this));
-		quantidadeItemInput.maskMoney({ precision: 0, thousands: '' });
+		bindQuantidade.call(this);
 		
-		var tabelaItem = $('.js-tabela-item');
-		tabelaItem.on('dblclick', onDoubleClick);
-		$('.js-exclusao-item-btn').on('click', onExclusaoItemClick.bind(this));
-		
-		
+		var tabelaItem = bindTabelaItem.call(this); 
 		this.emitter.trigger('tabela-itens-atualizada', tabelaItem.data('valor-total'));
 	}
 	
@@ -58,8 +59,8 @@ Brewer.TabelaItens = (function() {
 		var resposta = $.ajax({
 			url: 'item/' + codigoCerveja,
 			method: 'PUT',
-			contentType : "application/json",
-			data: JSON.stringify(formData)
+			data: JSON.stringify(formData),
+			contentType: "application/json"
 		});
 		
 		resposta.done(onItemAtualizadoNoServidor.bind(this));
@@ -79,6 +80,19 @@ Brewer.TabelaItens = (function() {
 		});
 		
 		resposta.done(onItemAtualizadoNoServidor.bind(this));
+	}
+	
+	function bindQuantidade() {
+		var quantidadeItemInput = $('.js-tabela-cerveja-quantidade-item');
+		quantidadeItemInput.on('change', onQuantidadeItemAlterado.bind(this));
+		quantidadeItemInput.maskMoney({ precision: 0, thousands: '' });
+	}
+	
+	function bindTabelaItem() {
+		var tabelaItem = $('.js-tabela-item');
+		tabelaItem.on('dblclick', onDoubleClick);
+		$('.js-exclusao-item-btn').on('click', onExclusaoItemClick.bind(this));
+		return tabelaItem;
 	}
 	
 	return TabelaItens;
