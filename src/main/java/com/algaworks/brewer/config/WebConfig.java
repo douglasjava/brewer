@@ -21,6 +21,7 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.format.support.FormattingConversionService;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -49,6 +50,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 @EnableWebMvc
 @EnableSpringDataWebSupport
 @EnableCaching
+@EnableAsync
 public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
 
 	private ApplicationContext applicationContext;

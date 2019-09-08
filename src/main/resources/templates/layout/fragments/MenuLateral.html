@@ -25,6 +25,9 @@
 			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/brewer/vendas}">
 			            	<a th:href="@{/brewer/vendas/nova}">Nova venda</a>
 			            </li>
+						<li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/brewer/vendas}">
+			            	<a th:href="@{/brewer/vendas}">Pesquisa de vendas</a>
+			            </li>			            
 			        </ul>
 			    </li>
 			            		
@@ -36,10 +39,10 @@
           			</a>
       
           			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/brewer/estilos}">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/brewer/estilos.*}">
 			            	<a th:href="@{/brewer/estilos}">Estilos</a>
 			            </li>
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/brewer/cervejas}">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/brewer/cervejas.*}">
 			            	<a th:href="@{/brewer/cervejas}">Cervejas</a>
 			            </li>
           			</ul>
@@ -52,13 +55,13 @@
           			</a>
 
           			<ul class="aw-menu__list  aw-menu__list--sublist">
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/brewer/cidades}">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/brewer/cidades.*}">
 			            	<a th:href="@{/brewer/cidades}">Cidades</a>
 			            </li>
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/brewer/clientes}">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/brewer/clientes.*}">
 			            	<a th:href="@{/brewer/clientes}">Clientes</a>
 			            </li>
-			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/brewer/usuarios}">
+			            <li class="aw-menu__item  aw-menu__item--link" brewer:menu="@{/brewer/usuarios.*}">
 			            	<a th:href="@{/brewer/usuarios}">Usuários</a>
 			            </li>
           			</ul>

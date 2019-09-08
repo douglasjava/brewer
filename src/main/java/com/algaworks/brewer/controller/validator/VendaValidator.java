@@ -7,7 +7,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import com.algaworks.brewer.dto.AlteraQuantidade;
 import com.algaworks.brewer.model.Venda;
 
 @Component
@@ -15,9 +14,6 @@ public class VendaValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		if(clazz.equals(AlteraQuantidade.class)) {
-			return true;
-		}
 		return Venda.class.isAssignableFrom(clazz);
 	}
 
