@@ -20,6 +20,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.util.StringUtils;
+
 import com.algaworks.brewer.validation.SKU;
 
 import lombok.Getter;
@@ -87,6 +89,10 @@ public class Cerveja extends EntityBase {
 
 	public String getFotoOuMock() {
 		return !isEmpty(foto) ? foto : "cerveja-mock.png";
+	}
+	
+	public boolean temFoto() {
+		return !StringUtils.isEmpty(this.foto);
 	}
 
 	@PreUpdate
