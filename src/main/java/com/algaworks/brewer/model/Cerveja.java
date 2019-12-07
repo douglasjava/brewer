@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
@@ -95,6 +96,13 @@ public class Cerveja extends EntityBase {
 		return !StringUtils.isEmpty(this.foto);
 	}
 
+	public boolean isNova() {
+		return super.getCodigo() == null;
+	}
+	
+	@Transient
+	private boolean novaFoto;
+	
 	@PreUpdate
 	@PrePersist
 	private void prePresistUpdate() {

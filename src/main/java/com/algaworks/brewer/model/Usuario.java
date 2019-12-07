@@ -61,7 +61,7 @@ public class Usuario implements Serializable {
 	private String confirmacaoSenha;
 
 	private boolean ativo;
-	
+
 	@PreUpdate
 	private void preUpdate() {
 		this.confirmacaoSenha = senha;
@@ -79,5 +79,10 @@ public class Usuario implements Serializable {
 	public boolean isNovo() {
 		return Objects.isNull(this.codigo);
 	}
+	
+	public boolean isEdicao() {
+		return Objects.nonNull(this.codigo);
+	}
+
 
 }

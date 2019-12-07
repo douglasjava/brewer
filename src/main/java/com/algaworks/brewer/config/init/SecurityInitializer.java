@@ -13,7 +13,7 @@ public class SecurityInitializer extends AbstractSecurityWebApplicationInitializ
 
 	@Override
 	protected void beforeSpringSecurityFilterChain(ServletContext servletContext) {
-		//servletContext.getSessionCookieConfig().setMaxAge(20); Tempo da sessão ativa
+		//servletContext.getSessionCookieConfig().setMaxAge(20); //Tempo da sessão ativa
 		servletContext.setSessionTrackingModes(EnumSet.of(SessionTrackingMode.COOKIE));
 		
 		FilterRegistration.Dynamic characterEncodingFilter = servletContext.addFilter("encodingFilter", new CharacterEncodingFilter());
