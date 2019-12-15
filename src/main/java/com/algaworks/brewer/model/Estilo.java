@@ -35,4 +35,7 @@ public class Estilo extends EntityBase {
 		this.cervejas = cervejas;
 	}
 
+	public boolean isNovo() {
+		return super.getCodigo() == null;
+	}
 }
