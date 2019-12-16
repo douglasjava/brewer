@@ -48,4 +48,8 @@ public class Cidade implements Serializable {
 		return Objects.nonNull(this.estado);
 	}
 
+	public boolean isNovo() {
+		return this.getCodigo() == null;
+	}
+
 }

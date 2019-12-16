@@ -44,7 +44,7 @@ public class EstilosController {
 		return new ModelAndView("estilo/CadastroEstilo");
 	}
 
-	@RequestMapping(value = "/novo", method = RequestMethod.POST)
+	@RequestMapping(value = {"/novo", "{\\d+}"}, method = RequestMethod.POST)
 	public ModelAndView cadastrar(@Valid Estilo estilo, BindingResult result, Model model,
 			RedirectAttributes attributes) {
 
@@ -76,7 +76,7 @@ public class EstilosController {
 	}
 
 	@GetMapping
-	public ModelAndView pesquisar(EstiloFilter estiloFilter, BindingResult result, @PageableDefault(size = 2) Pageable pageable, HttpServletRequest httpServletRequest) {
+	public ModelAndView pesquisar(EstiloFilter estiloFilter, BindingResult result, @PageableDefault(size = 5) Pageable pageable, HttpServletRequest httpServletRequest) {
 
 		ModelAndView mv = new ModelAndView("estilo/PesquisaEstilos");
 		
@@ -87,8 +87,9 @@ public class EstilosController {
 	}
 	
 	@GetMapping("/{codigo}")
-	public ModelAndView editar(@PathVariable("codigo") Estilo estilo) {
-		ModelAndView mv = this.novo(estilo);
+	public ModelAndView editar(@PathVariable("codigo") Long codigo) {
+		Estilo estilo = estilos.findById(codigo).orElse(new Estilo());
+		ModelAndView mv = novo(estilo);
 		mv.addObject(estilo);
 		return mv;
 	}
