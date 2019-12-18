@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.brewer.dto.CervejaDTO;
+import com.algaworks.brewer.dto.ValorItensEstoque;
 import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.repository.filter.CervejaFilter;
 import com.algaworks.brewer.repository.paginacao.PaginacaoUtil;
@@ -57,6 +58,13 @@ public class CervejasImpl implements CervejasQueries {
 
 		return new PageImpl<>(cervejas, pageable, total(filtro));
 
+	}
+	
+	
+	@Override
+	public ValorItensEstoque valorItensEstoque() {
+		String query = "select new com.algaworks.brewer.dto.ValorItensEstoque(sum(valor * quantidadeEstoque), sum(quantidadeEstoque)) from Cerveja";
+		return manager.createQuery(query, ValorItensEstoque.class).getSingleResult();
 	}
 
 	private Long total(CervejaFilter filtro) {

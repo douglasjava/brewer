@@ -44,6 +44,7 @@ public class DataBaseConfig {
 		em.setDataSource(dataSource());
 		em.setJpaVendorAdapter(vendorAdapter);
 		em.setPackagesToScan(Cerveja.class.getPackage().getName());
+		em.setMappingResources("sql/consultas-nativas.xml");
 		em.setJpaProperties(additionalProperties());
 		em.afterPropertiesSet();
 

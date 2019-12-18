@@ -21,6 +21,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.StringUtils;
 
 import com.algaworks.brewer.validation.SKU;
@@ -36,6 +38,8 @@ import lombok.Setter;
 @Table(name = "cerveja")
 @Getter
 @Setter
+@DynamicInsert
+@DynamicUpdate
 public class Cerveja extends EntityBase {
 
 	private static final long serialVersionUID = 1L;
@@ -91,7 +95,7 @@ public class Cerveja extends EntityBase {
 	public String getFotoOuMock() {
 		return !isEmpty(foto) ? foto : "cerveja-mock.png";
 	}
-	
+
 	public boolean temFoto() {
 		return !StringUtils.isEmpty(this.foto);
 	}
@@ -99,10 +103,10 @@ public class Cerveja extends EntityBase {
 	public boolean isNova() {
 		return super.getCodigo() == null;
 	}
-	
+
 	@Transient
 	private boolean novaFoto;
-	
+
 	@PreUpdate
 	@PrePersist
 	private void prePresistUpdate() {

@@ -1,5 +1,6 @@
 package com.algaworks.brewer.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,12 +22,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.algaworks.brewer.controller.page.PageWrapper;
 import com.algaworks.brewer.controller.validator.VendaValidator;
 import com.algaworks.brewer.dto.AlteraQuantidade;
+import com.algaworks.brewer.dto.VendaMes;
 import com.algaworks.brewer.mail.Mailer;
 import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.model.ItemVenda;
@@ -55,10 +58,10 @@ public class VendasController {
 
 	@Autowired
 	private VendaValidator vendaValidator;
-	
+
 	@Autowired
 	private Vendas vendas;
-	
+
 	@Autowired
 	private Mailer mailer;
 
@@ -72,7 +75,7 @@ public class VendasController {
 		ModelAndView mv = new ModelAndView("venda/CadastroVenda");
 
 		setUuid(venda);
-		
+
 		mv.addObject("itens", venda.getItens());
 		mv.addObject("valorFrete", venda.getValorFrete());
 		mv.addObject("valorDesconto", venda.getValorDesconto());
@@ -121,10 +124,11 @@ public class VendasController {
 
 		venda.setUsuario(usuarioSistema.getUsuario());
 		venda = cadastroVendaService.salvar(venda);
-		
+
 		mailer.enviar(venda);
-		
-		attributes.addFlashAttribute("mensagem", String.format("Venda nº %d salva com sucesso e e-mail enviado", venda.getCodigo()));
+
+		attributes.addFlashAttribute("mensagem",
+				String.format("Venda nº %d salva com sucesso e e-mail enviado", venda.getCodigo()));
 		return new ModelAndView("redirect:/brewer/vendas/nova");
 	}
 
@@ -148,15 +152,15 @@ public class VendasController {
 		tabelaItens.excluirItem(uuid, cerveja);
 		return mvTabelaItensVenda(uuid);
 	}
-	
+
 	@GetMapping
-	public ModelAndView pesquisar(VendaFilter vendaFilter,
-			@PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
-		
+	public ModelAndView pesquisar(VendaFilter vendaFilter, @PageableDefault(size = 10) Pageable pageable,
+			HttpServletRequest httpServletRequest) {
+
 		ModelAndView mv = new ModelAndView("/venda/PesquisaVendas");
 		mv.addObject("todosStatus", StatusVenda.values());
 		mv.addObject("tiposPessoa", TipoPessoa.values());
-		
+
 		PageWrapper<Venda> paginaWrapper = new PageWrapper<>(vendas.filtrar(vendaFilter, pageable), httpServletRequest);
 		mv.addObject("pagina", paginaWrapper);
 		return mv;
@@ -165,30 +169,35 @@ public class VendasController {
 	@GetMapping("/{codigo}")
 	public ModelAndView editar(@PathVariable Long codigo) {
 		Venda venda = vendas.buscarComItens(codigo);
-		
+
 		setUuid(venda);
 		for (ItemVenda item : venda.getItens()) {
 			tabelaItens.adicionarItem(venda.getUuid(), item.getCerveja(), item.getQuantidade());
 		}
-		
+
 		ModelAndView mv = nova(venda);
 		mv.addObject(venda);
 		return mv;
 	}
-	
+
 	@PostMapping(value = "/nova", params = "cancelar")
-	public ModelAndView cancelar(Venda venda, BindingResult result
-				, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
+	public ModelAndView cancelar(Venda venda, BindingResult result, RedirectAttributes attributes,
+			@AuthenticationPrincipal UsuarioSistema usuarioSistema) {
 		try {
 			cadastroVendaService.cancelar(venda);
 		} catch (AccessDeniedException e) {
 			return new ModelAndView("/403");
 		}
-		
+
 		attributes.addFlashAttribute("mensagem", "Venda cancelada com sucesso");
 		return new ModelAndView("redirect:/brewer/vendas/" + venda.getCodigo());
 	}
-	
+
+	@GetMapping("/totalPorMes")
+	public @ResponseBody List<VendaMes> listarTotalVendaPorMes() {
+		return vendas.totalPorMes();
+	}
+
 	private ModelAndView mvTabelaItensVenda(String uuid) {
 		ModelAndView mv = new ModelAndView("venda/TabelaItensVenda");
 		mv.addObject("itens", tabelaItens.getItens(uuid));
