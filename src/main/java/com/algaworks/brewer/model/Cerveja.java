@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
@@ -25,6 +26,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.util.StringUtils;
 
+import com.algaworks.brewer.repository.listener.CervejaEntityListener;
 import com.algaworks.brewer.validation.SKU;
 
 import lombok.Getter;
@@ -34,6 +36,7 @@ import lombok.Setter;
  * @author Marques
  *
  */
+@EntityListeners(CervejaEntityListener.class)
 @Entity
 @Table(name = "cerveja")
 @Getter
@@ -106,6 +109,12 @@ public class Cerveja extends EntityBase {
 
 	@Transient
 	private boolean novaFoto;
+
+	@Transient
+	private String urlFoto;
+
+	@Transient
+	private String urlThumbnailFoto;
 
 	@PreUpdate
 	@PrePersist

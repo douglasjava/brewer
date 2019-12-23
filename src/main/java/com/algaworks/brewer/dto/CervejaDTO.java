@@ -21,6 +21,7 @@ public class CervejaDTO {
 	private String origem;
 	private BigDecimal valor;
 	private String foto;
+	private String urlThumbnailFoto;
 
 	public CervejaDTO(Long codigo, String sku, String nome, Origem origem, BigDecimal valor, String foto) {
 		super();
