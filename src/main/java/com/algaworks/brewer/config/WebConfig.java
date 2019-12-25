@@ -64,6 +64,7 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
 		ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
 		viewResolver.setTemplateEngine(templateEngine());
 		viewResolver.setCharacterEncoding("UTF-8");
+		viewResolver.setOrder(1);
 		return viewResolver;
 	}
 
@@ -106,7 +107,7 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
 
 		BigDecimalFormatter bigDecimalFormatter = new BigDecimalFormatter("#,##0.00");
 		conversionService.addFormatterForFieldType(BigDecimal.class, bigDecimalFormatter);
-		
+
 		BigDecimalFormatter integerFormatter = new BigDecimalFormatter("#,##0");
 		conversionService.addFormatterForFieldType(Integer.class, integerFormatter);
 
@@ -141,25 +142,24 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
 		bundle.setDefaultEncoding("UTF-8");
 		return bundle;
 	}
-	
+
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**").allowedOrigins("*")
-				.allowedMethods("HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE")
-				.maxAge(3600);
+				.allowedMethods("HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE").maxAge(3600);
 	}
-	
+
 	@Bean
-	public DomainClassConverter<FormattingConversionService> domainClassConverter(){
+	public DomainClassConverter<FormattingConversionService> domainClassConverter() {
 		return new DomainClassConverter<FormattingConversionService>(mvcConversionService());
 	}
-	
+
 	@Bean
 	public LocalValidatorFactoryBean validator() {
-	    LocalValidatorFactoryBean validatorFactoryBean = new LocalValidatorFactoryBean();
-	    validatorFactoryBean.setValidationMessageSource(messageSource());
-	    
-	    return validatorFactoryBean;
+		LocalValidatorFactoryBean validatorFactoryBean = new LocalValidatorFactoryBean();
+		validatorFactoryBean.setValidationMessageSource(messageSource());
+
+		return validatorFactoryBean;
 	}
 
 }
