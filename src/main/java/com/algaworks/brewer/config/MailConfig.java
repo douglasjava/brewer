@@ -13,10 +13,16 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import com.algaworks.brewer.mail.Mailer;
 
+/**
+ * 
+ * @author Marques
+ * Para funcionamento do arquivo externo, o mesmo é necessário ser colocado dentro da pasta do usuário em que for rodar o sistema
+ * ex: C:\Users\Marques\brewer-mail.properties
+ */
 @Configuration
 @ComponentScan(basePackageClasses = Mailer.class)
 @PropertySource({ "classpath:env/mail-${ambiente:local}.properties" })
-@PropertySource(value = { "file://${HOME}/.brewer-mail.properties" }, ignoreResourceNotFound = true)
+@PropertySource(value = { "file:${USERPROFILE}/brewer-mail.properties" }, ignoreResourceNotFound = true)
 public class MailConfig {
 	
 	@Autowired
