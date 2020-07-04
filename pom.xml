@@ -27,7 +27,7 @@
 		<jackson-core.version>2.7.5</jackson-core.version>
 		<thumbnailator.version>0.4.8</thumbnailator.version>
 		<guava.version>19.0</guava.version>
-		<commons-beanutils.version>1.9.2</commons-beanutils.version>
+		<commons-beanutils.version>1.9.4</commons-beanutils.version>
 		<junit.version>4.12</junit.version>
 		<javax.mail.version>1.5.6</javax.mail.version>
 		<aws-java-sdk-s3.version>1.10.77</aws-java-sdk-s3.version>
