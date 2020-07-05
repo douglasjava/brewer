@@ -11,6 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -22,6 +23,7 @@ import com.algaworks.brewer.model.Cerveja;
 
 @Configuration
 @EnableAutoConfiguration
+@PropertySource(value = { "file:${USERPROFILE}/brewer-database.properties" }, ignoreResourceNotFound = true)
 public class DataBaseConfig {
 
 	@Autowired
@@ -30,7 +32,10 @@ public class DataBaseConfig {
 	@Bean
 	@ConfigurationProperties("app.datasource")
 	public DataSource dataSource() {
-		return DataSourceBuilder.create().build();
+		return DataSourceBuilder.create()
+				.username(env.getProperty("datasource.username"))
+				.password(env.getProperty("datasource.password"))
+				.build();
 	}
 
 	@Bean
